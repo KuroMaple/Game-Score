@@ -1,11 +1,26 @@
 import ApiService from './api'
 
-const BASEURL = "https://api.spotify.com/v1"
-const GameScorePlaylist = "4PpdBcNlXbC5WmfmYGgP41"
+
 
 const SpotifyService = {
-  getPlaylist:  () => {
-    ApiService.get(`${BASEURL}/v1/playlists/${GameScorePlaylist}`)
+  getPlaylist:  async () => {
+    return await ApiService.get(`${process.env.BASEURL}/playlists/${process.env.GAME_SCORE_PLAYLIST}`)
+  },
+  getAccessToken: async (): Promise<string> => {
+    const clientId = process.env.SPOTIFY_CLIENT_ID
+    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
+    if (!clientId || !clientSecret){
+      throw new Error("Missing Spotify credentials")
+    }
+
+    const body = new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+    })
+    const response = await ApiService.post("https://accounts.spotify.com/api/token", body)
+    console.log("response is: ", response)
+    return response
   }
 }
 export default SpotifyService
