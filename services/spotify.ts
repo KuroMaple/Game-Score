@@ -1,10 +1,10 @@
-import { SpotifyToken } from '@/types/spotifyToken'
+import { SpotifyToken } from '@/types/SpotifyToken'
 import ApiService from './api'
 
 
 
 const SpotifyService = {
-  getPlaylist:  async () => {
+  getPlaylist:  async (token: string) => {
     return await ApiService.get(`${process.env.BASEURL}/playlists/${process.env.GAME_SCORE_PLAYLIST}`)
   },
   getAccessToken: async (): Promise<SpotifyToken> => {

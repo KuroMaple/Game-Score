@@ -15,6 +15,8 @@ export default function Home() {
     const savedToken = localStorage.getItem('spotify_token')
     const savedExpiry = localStorage.getItem('spotify_token_expiry')
     const now = Date.now()
+
+    // check local storage
     if (savedToken && savedExpiry && now < Number(savedExpiry)){
       setToken(savedToken)
       console.log('Token from storage: ', savedToken)
@@ -46,7 +48,6 @@ export default function Home() {
         <div
           className='flex flex-row mt-8 gap-3'
         >
-          
           <button
             onClick={getAccessToken}
             className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
@@ -65,7 +66,7 @@ export default function Home() {
       </main>
       <footer
         className='absolute bottom-4 text-gray-500'>
-        Made by KuroMaple
+        Made by ⚫🍁
       </footer>
     </div>
   );
