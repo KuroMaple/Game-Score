@@ -1,5 +1,7 @@
 'use client'
+import ApiService from '@/services/api'
 import SpotifyService from '@/services/spotify'
+import { SpotifyToken } from '@/types/spotifyToken'
 import { useState } from 'react'
 
 export default function Home() {
@@ -20,33 +22,32 @@ export default function Home() {
     }
 
     // Fetch new token
-    const res = await fetch('/api/spotify-access-token')
-    const data = await res.json()
-    setToken(data.token.access_token)
+    const res: SpotifyToken = await ApiService.get('/api/spotify-access-token')
 
-    const expiry = now + 60 * 60 * 1000
-    localStorage.setItem('spotify_token', data.token.access_token)
+    setToken(res.access_token)
+    const expiry = now + (res.expires_in * 1000)
+    localStorage.setItem('spotify_token', res.access_token)
     localStorage.setItem('spotify_token_expiry', expiry.toString())
-    console.log('Token from API:', data.token)
+    console.log('Token from API:', res)
   }
 
   return (
     <div
-      className='flex justify-center min-h-screen items-center'
+      className='flex justify-center min-h-screen'
     >
-      <main>
-        <div
-          className='flex flex-col'
-        >
-          <h1
-            className='text-lg'
+      <main
+        className='flex flex-col items-center w-full mt-8'
+      >
+        <h1
+            className='text-8xl text-center'
           >
             Game Score
           </h1>
-          <div
-            className='flex flex-row gap-2'
-          >
-            <button
+        <div
+          className='flex flex-row mt-8 gap-3'
+        >
+          
+          <button
             onClick={getAccessToken}
             className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
             >
@@ -58,14 +59,13 @@ export default function Home() {
           >
             Get playlist
           </button>
-          </div>
           
         </div>
         
       </main>
-      <footer>
-        
-        
+      <footer
+        className='absolute bottom-4 text-gray-500'>
+        Made by KuroMaple
       </footer>
     </div>
   );
