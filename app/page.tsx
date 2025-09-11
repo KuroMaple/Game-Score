@@ -11,11 +11,11 @@ export default function Home() {
   const [playlist, setPlaylist] = useState<SpotifyPlaylist | null>(null)
   const getPlaylist = async () => {
     const savedPlaylist = localStorage.getItem('spotify_playlist')
-    if (savedPlaylist){
-      setPlaylist(JSON.parse(savedPlaylist))
-      console.log('Playlist from storage: ', savedPlaylist)
-      return
-    }
+    // if (savedPlaylist){
+    //   setPlaylist(JSON.parse(savedPlaylist))
+    //   console.log('Playlist from storage: ', savedPlaylist)
+    //   return
+    // }
 
     if (!token){
       console.error("No access token available")

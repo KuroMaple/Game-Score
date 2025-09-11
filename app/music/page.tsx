@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 
 const MusicPage = () => {
   const [playlist, setPlaylist] = useState<SpotifyPlaylist | null>(null)
+  // const [previewURL, setPreviewUrl] = useState<string | null>(null)
   useEffect(() => {
     const savedPlaylist = localStorage.getItem('spotify_playlist')
     if (savedPlaylist) {
@@ -22,9 +23,10 @@ const MusicPage = () => {
       console.error("Playlist not set, unable to generate random song")
       return
     }
-    
-    const songURL = getRandomTrackItem(playlist.tracks.items)?.track.href
-    console.log("song url is: ", songURL)
+    playlist.tracks.items.forEach(item => {
+      console.log(item.track.preview_url);
+    })  
+    // setPreviewUrl(songURL ?? null)
   }
   return (
     <div
@@ -35,7 +37,7 @@ const MusicPage = () => {
       >
         Music Page
       </h1>
-      <MusicPlayer />
+      {/* {previewURL && <MusicPlayer src={previewURL}/>} */}
       <div
         className='flex justify-center'
       >
