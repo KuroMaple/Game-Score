@@ -2,17 +2,26 @@
 import { API_ROUTES } from '@/config/apiRoutes'
 import ApiService from '@/services/api'
 import SpotifyService from '@/services/spotify'
+import { SpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import { SpotifyToken } from '@/types/SpotifyToken'
 import { useState } from 'react'
 
 export default function Home() {
   const [token, setToken] = useState('')
+  const [playlist, setPlaylist] = useState<SpotifyPlaylist | null>(null)
   const getPlaylist = async () => {
+    const savedPlaylist = localStorage.getItem('spotify_playlist')
+    if (savedPlaylist){
+      setPlaylist(JSON.parse(savedPlaylist))
+      console.log('Playlist from storage: ', savedPlaylist)
+      return
+    }
+
     if (!token){
       console.error("No access token available")
       return
     }
-    const playlist = await ApiService.get(
+    const playlist: SpotifyPlaylist = await ApiService.get(
       API_ROUTES.spotifyPlaylist,
       {
       headers: {
@@ -20,7 +29,10 @@ export default function Home() {
       }
     }
     )
-    console.log(playlist)
+    setPlaylist(playlist)
+    const playlistString = JSON.stringify(playlist)
+    localStorage.setItem('spotify_playlist', playlistString)
+    console.log('Playlist:', playlist) // debugging
   }
 
   const getAccessToken = async () => {
@@ -73,6 +85,14 @@ export default function Home() {
             Get playlist
           </button>
           
+        </div>
+        <div>
+          <button
+            onClick={() => window.location.href = '/music'}
+            className='mt-8 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded'
+          >
+            Go to Music page
+          </button>
         </div>
         
       </main>
