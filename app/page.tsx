@@ -57,6 +57,13 @@ export default function Home() {
     console.log('Token from API:', res)
   }
 
+  const goToMusicPage = () => {
+    if (!playlist) {
+      console.error("No playlist set in local storage, fetch before navigating")
+      return
+    }
+    window.location.href = '/music'
+  }
   return (
     <div
       className='flex justify-center min-h-screen'
@@ -88,7 +95,7 @@ export default function Home() {
         </div>
         <div>
           <button
-            onClick={() => window.location.href = '/music'}
+            onClick={goToMusicPage}
             className='mt-8 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded'
           >
             Go to Music page
