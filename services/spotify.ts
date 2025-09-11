@@ -4,8 +4,16 @@ import ApiService from './api'
 
 
 const SpotifyService = {
-  getPlaylist:  async (token: string) => {
-    return await ApiService.get(`${process.env.BASEURL}/playlists/${process.env.GAME_SCORE_PLAYLIST}`)
+  getPlaylist:  async (accessToken: string) => {
+    return await ApiService.get(
+      `${process.env.BASEURL}/playlists/${process.env.GAME_SCORE_PLAYLIST}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+    )
+
   },
   getAccessToken: async (): Promise<SpotifyToken> => {
     const clientId = process.env.SPOTIFY_CLIENT_ID

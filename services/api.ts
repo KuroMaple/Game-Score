@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const ApiService =  {
-  get: async (resource: string) => {
-    const response = await axios.get(resource)
+  get: async (resource: string, config?: any) => {
+    const response = await axios.get(resource, config)
     return response.data
   },
   post: async (resource: string, body: any) => {

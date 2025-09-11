@@ -1,13 +1,25 @@
 'use client'
+import { API_ROUTES } from '@/config/apiRoutes'
 import ApiService from '@/services/api'
 import SpotifyService from '@/services/spotify'
-import { SpotifyToken } from '@/types/spotifyToken'
+import { SpotifyToken } from '@/types/SpotifyToken'
 import { useState } from 'react'
 
 export default function Home() {
   const [token, setToken] = useState('')
   const getPlaylist = async () => {
-    const playlist = await SpotifyService.getPlaylist()
+    if (!token){
+      console.error("No access token available")
+      return
+    }
+    const playlist = await ApiService.get(
+      API_ROUTES.spotifyPlaylist,
+      {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    )
     console.log(playlist)
   }
 
@@ -24,7 +36,7 @@ export default function Home() {
     }
 
     // Fetch new token
-    const res: SpotifyToken = await ApiService.get('/api/spotify-access-token')
+    const res: SpotifyToken = await ApiService.get(API_ROUTES.spotifyAccessToken)
 
     setToken(res.access_token)
     const expiry = now + (res.expires_in * 1000)
